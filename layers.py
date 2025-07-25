@@ -1,5 +1,4 @@
 from derives import derived_adjustedmean
-from helpers import flatten_avnn
 from torch import nn, stack, empty_like, empty
 from torch.nn import Module, Linear
 from torch.nn.functional import relu
@@ -30,8 +29,6 @@ class AVNNType1Linear(Module):
         self.carry = 1
 
     def forward(self, input_tensor):
-        if input_tensor.ndim > 3:
-            input_tensor = flatten_avnn(input_tensor, 3)
         # Separate X and Y channels
         activation_in = input_tensor[..., self.activator]
         carry_in      = input_tensor[..., self.carry]
@@ -91,8 +88,6 @@ class AVNNType1Conv2d(nn.Module):
         self.carry = 1
 
     def forward(self, input_tensor):
-        if input_tensor.ndim > 5:
-            input_tensor = flatten_avnn(input_tensor, 5)
         act_in = input_tensor[..., self.activator]  # [B, C_in, H, W]
         car_in = input_tensor[..., self.carry]      # [B, C_in, H, W]
 
