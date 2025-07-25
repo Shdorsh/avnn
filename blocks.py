@@ -46,8 +46,7 @@ class AVNNResBlock(Module):
 
     def forward(self, x):
         out = self.layers(x)
-        out = out + x  # Residual connection
-        return self.activation(out) if self.activation else out
+        out = out + x
 
 class AVNNConv2dResBlock(Module):
     def __init__(self, channels, hidden_channels=None, kernel_size=1, stride=1, padding=0, derive_mode=derived_adjustedmean, activation=relu):
@@ -55,7 +54,8 @@ class AVNNConv2dResBlock(Module):
         hidden_channels = hidden_channels or channels
         self.layers = AVNNConv2dBlock(in_channels=channels, hidden_channels=hidden_channels, out_channels=channels, kernel_size=kernel_size, stride=stride, padding=padding, derive_mode=derive_mode, activation=activation)
 
-    def forward(self, tensor):
-        return self.layers(tensor)
+    def forward(self, x):
+        out = self.layers(x)
+        return out + x
 
 __all__ = ['AVNNLinearBlock', 'AVNNConv2dBlock', 'AVNNResBlock', 'AVNNConv2dResBlock']
