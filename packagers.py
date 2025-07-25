@@ -13,20 +13,20 @@ class Type2EmptyPackager(Module):
         out = [empty_tensor, tensor]
         return stack(out, dim=-1)
 
-class FuseAsCarryPackager(Module):
+class FuseAsMeaningPackager(Module):
     def __init__(self, tensor):
         super().__init__()
-        self.carry = tensor
+        self.meaning = tensor
 
     def forward(self, tensor):
-        return stack([tensor, self.carry], dim=-1)
+        return stack([tensor, self.meanin], dim=-1)
 
-class FuseAsActivatorPackager(Module):
+class FuseAsValuePackager(Module):
     def __init__(self, tensor):
         super().__init__()
-        self.activator = tensor
+        self.value = tensor
 
     def forward(self, tensor):
-        return stack([self.activator, tensor], dim=-1)
+        return stack([self.value, tensor], dim=-1)
 
 __all__ = ['Type1EmptyPackager', 'Type2EmptyPackager', 'FuseAsCarryPackager', 'FuseAsActivatorPackager']
