@@ -36,4 +36,26 @@ class AVNNConv2dBlock(Module):
     def forward(self, tensor):
         return self.layers(tensor)
 
-__all__ = ['AVNNLinearBlock', 'AVNNConv2dBlock']
+
+class AVNNResBlock(Module):
+    def __init__(self, dim, hidden_dim=None, derived_mode=derived_adjustedmean, activation=relu):
+        super().__init__()
+        hidden_dim = hidden_dim or dim
+        self.layers = AVNNLinearBlock(input_dim=dim, hidden_dim=hidden_dim, output_dim=dim, derived_mode=derived_mode, activation=relu)
+        self.activation = activation
+
+    def forward(self, x):
+        out = self.layers(x)
+        out = out + x  # Residual connection
+        return self.activation(out) if self.activation else out
+
+class AVNNConv2dResBlock(Module):
+    def __init__(self, channels, hidden_channels=None, kernel_size=1, stride=1, padding=0, derive_mode=derived_adjustedmean, activation=relu):
+        super().__init__()
+        hidden_channels = hidden_channels or channels
+        self.layers = AVNNConv2dBlock(in_channels=channels, hidden_channels=hidden_channels, out_channels=channels, kernel_size=kernel_size, stride=stride, padding=padding, derive_mode=derive_mode, activation=activation)
+
+    def forward(self, tensor):
+        return self.layers(tensor)
+
+__all__ = ['AVNNLinearBlock', 'AVNNConv2dBlock', 'AVNNResBlock', 'AVNNConv2dResBlock']

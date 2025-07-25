@@ -42,12 +42,16 @@ Layers come as type 1 or type 2, meaning either (type 1) the values will be used
 Bridges are learnable layers that can help change data from linear-compatible to Conv2d-compatible, changing the tensor from: `[B, F, 2]` to `[B, C, H, W, 2]`. The bridges are:
 
  - AVNNLinearToConv2dBridge
- - AVNNConv2dToLinarBridge
+ - AVNNConv2dToLinearBridge
 
 There's also implementations for 2D convolutional layers, and a block, named in the same fashion as the linear layers:
  - AVNNType1Conv2d
  - AVNNType2Conv2d
  - AVNNConv2dBlock
+
+Furthermore, residual blocks have also been added:
+ - AVNNResBlock
+ - AVNNConv2dResBlock
 
 # Derive modes
 

@@ -1,7 +1,7 @@
 from torch import cat, stack
 from torch.nn import Module, Linear
 
-class AVNNConv2dToLinarBridge(Module):
+class AVNNConv2dToLinearBridge(Module):
     def __init__(self, dim, channels, height, width):
         super().__init__()
         self.dim = dim
@@ -36,4 +36,4 @@ class AVNNLinearToConv2dBridge(Module):
         # reshape to conv format
         return tensor.view(B, self.C, self.H, self.W, two)
 
-__all__ = ['AVNNConv2dToLinarBridge', 'AVNNLinearToConv2dBridge']
+__all__ = ['AVNNConv2dToLinearBridge', 'AVNNLinearToConv2dBridge']
