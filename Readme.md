@@ -7,27 +7,27 @@ At first, I tried just carrying over the value through functions (derives) that 
 
 # Parts and pieces
 
-## Entrypoint 1: The tokenizer
+### Entrypoint 1: The tokenizer
 The `TagValueTokenizer` turns .csv files into an associated tensor, where each value is a pair. As such, the tensors look like this:
 `[B, F, 2]` where B is batch, and F is features.
 
-## Entrypoint 2: Packagers
+### Entrypoint 2: Packagers
 
 Packagers are mainly there to allow the data from normal neural networks to flow into the AVNN architecture.
 
-## Type1EmptyPackager
+### Type1EmptyPackager
 
 This packager fills the given tensor into the value dimension `[..., 0]`. An empty meaning dimension `[..., 1]` gets created and added to the packager.
 
-## Type2EmptyPackager
+### Type2EmptyPackager
 
 This packager fills the given tensor into the meaning dimension `[..., 1]`. An empty value dimension `[..., 0]` gets created and added to the packager.
 
-## FuseAsMeaningPackager
+### FuseAsMeaningPackager
 
 This packager takes a tensor on initiation, and will set it as the meaning. During forwarding, another tensor will be taken and used as value.
 
-## FuseAsValuePackager
+### FuseAsValuePackager
 
 This packager takes a tensor on initiation, and will set it as the value. During forwarding, another tensor will be taken and used as meaning.
 
@@ -62,14 +62,14 @@ Derive modes define the function that will be applied on the meaning values, cal
 
 Condensers bridge the way from AVNN back to common neural networks, reducing the dimension of AVNN's  `[B, F, 2]` tensor into a conventional `[B, F]` tensor. Here a few examples:
 
-## MappingCondenser
+### MappingCondenser
 
 Collapses one dimension of the tensor by appending the meaning and the value, thus going from `[B, F, 2]` to `[B, F x 2]`
 
-## FusingCondenser
+### FusingCondenser
 
 A learned layer is used where both value and meaning is put inside an activation function, relu by default, as: `Sum(value x value_weight + meaning x meaning_value) + bias`
 
-## SeparatingCondenser
+### SeparatingCondenser
 
 Kinda experimental, this condenser forwards an array with entries being a value tensor and a meaning tensor.
