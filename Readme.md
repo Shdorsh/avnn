@@ -3,7 +3,16 @@
 ## What the hell did I stumble on?
 This was just an attempt to create a neural network that preserves associations between values and meaning, creating layers that either work as value-activated, meaning carrying, or meaning-activated, value-carrying. This would mean that associations between tokens would be kept as the they travel through the neural net. Feel free to play around and commit.
 
-At first, I tried just carrying over the value through functions (derives) that take the highest activator/mean activator etc's corresponding meaning value, but quickly ran into problems creating descrete, non-differential selection mechanics that mess up backpropagation, making it unlearnable.
+At first, I tried just carrying over the value through functions (derives) that take the highest activator/mean activator etc's corresponding meaning value, but quickly ran into problems creating discrete, non-differential selection mechanics that mess up backpropagation, making it unlearnable.
+
+# Glossary
+### Value/Meaning
+The data inside the tensor is arranged as a tuple of two, like `[value, meaning]`.
+
+### Activator/Carry
+The activator is the one entry in the tuple that gets used inside the activating function. The carry is the one entry that gets derived from the activators, using a derive function. This is done to keep the association between both values. Depending on which type of layer, you can have:
+Type 1: `[activator/value, carry/meaning]`
+Type 2: `[carry/value, activator/meaning]`
 
 # Parts and pieces
 
