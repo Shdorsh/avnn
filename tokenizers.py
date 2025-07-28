@@ -64,22 +64,26 @@ class TagValueTokenizer:
             self.build_vocab(data_string)
 
         # Single row input expected: a string of tags separated by column_separator
-        tokens = []
-        for i, entry in enumerate(data_string.strip().split(self.column_separator)):
-            if i in self.excluded_columns or not entry:
-                continue
-            tag_value = entry.split(self.tag_value_separator)
-            tag = self.vocab.get(tag_value[0].strip(), 0)
-            val = self.vocab.get(tag_value[1].strip(), 0) if len(tag_value) > 1 else 0
-            tokens.append([tag, val])
+        complete_tokens = []
+        for entry in data_string.strip().split(self.row_delimiter):
+            entry_tokens = []
+            for i, tag in enumerate(entry.strip().split(self.column_separator)):
+                if i in self.excluded_columns or not tag:
+                    continue
+                tag_value = tag.split(self.tag_value_separator)
+                tag = self.vocab.get(tag_value[0].strip(), 0)
+                val = self.vocab.get(tag_value[1].strip(), 0) if len(tag_value) > 1 else 0
+                entry_tokens.append([tag, val])
+            complete_tokens.append(entry_tokens)
+        print("Complete tokens: ", complete_tokens)
 
         # Truncate if too long
-        if len(tokens) > self.max_len:
-            tokens = tokens[:self.max_len]
+        if len(complete_tokens) > self.max_len:
+            complete_tokens = complete_tokens[:self.max_len]
         # Pad if too short
-        while len(tokens) < self.max_len:
-            tokens.append([0, 0])
+        while len(complete_tokens) < self.max_len:
+            complete_tokens.append([0, 0])
 
-        return tensor(tokens, dtype=long)
+        return tensor(complete_tokens, dtype=long)
 
 __all__ = ['TagValueTokenizer']
