@@ -1,5 +1,5 @@
 from torch.nn import Module
-from torch import stack, empty_like
+from torch import stack, empty_like, rand_like
 
 class Type1EmptyPackager(Module):
     def forward(self, tensor):
@@ -29,4 +29,14 @@ class FuseAsValuePackager(Module):
     def forward(self, tensor):
         return stack([self.value, tensor], dim=-1)
 
-__all__ = ['Type1EmptyPackager', 'Type2EmptyPackager', 'FuseAsCarryPackager', 'FuseAsActivatorPackager']
+class ValueNoisePackager(Module):
+    def forward(self, tensor):
+        rand_tensor = rand_like(tensor)
+        return stack([rand_tensor, tensor], dim=-1)
+
+class MeaningNoisePackager(Module):
+    def forward(self, tensor):
+        rand_tensor = rand_like(tensor)
+        return stack([tensor, rand_tensor], dim=-1)
+
+__all__ = ['Type1EmptyPackager', 'Type2EmptyPackager', 'ValueNoisePackager', 'MeaningNoisePackager', 'FuseAsMeaningPackager', 'FuseAsValuePackager']

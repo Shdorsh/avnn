@@ -31,6 +31,14 @@ This packager takes a tensor on initiation, and will set it as the meaning. Duri
 
 This packager takes a tensor on initiation, and will set it as the value. During forwarding, another tensor will be taken and used as meaning.
 
+### ValueNoisePackager
+
+This packager fills the value dimension `[..., 0]` with noise. The forwarded tensor is put inside the meaning dimension `[..., 1]`.
+
+### MeaningNoisePackager
+
+This packager fills the forwarded tensor into the value dimension `[..., 0]`. The meaning dimension `[..., 1]` gets filled with noise. 
+
 # Layers, bridges and blocks
 
 Layers come as type 1 or type 2, meaning either (type 1) the values will be used as activators and the meaning will be derived from a derive function, or (type 2) the meaning will be used as activators and the value will be derived from a derive function. Blocks are arranged as one Type 1 layer, one Type 2 layer.
