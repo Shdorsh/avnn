@@ -46,7 +46,7 @@ This packager fills the value dimension `[..., 0]` with noise. The forwarded ten
 
 ### MeaningNoisePackager
 
-This packager fills the forwarded tensor into the value dimension `[..., 0]`. The meaning dimension `[..., 1]` gets filled with noise. 
+This packager fills the forwarded tensor into the value dimension `[..., 0]`. The meaning dimension `[..., 1]` gets filled with noise.
 
 # Layers, bridges and blocks
 
@@ -70,14 +70,18 @@ Furthermore, residual blocks have also been added:
  - AVNNResBlock
  - AVNNConv2dResBlock
 
+These pass the tensor through either an AVNNLinearBlock or AVNNConv2dResBlock, then do an addition on the original tensor and output tensor.
+
 # Derive modes
 
 Derive modes define the function that will be applied on the meaning values, calculating. Each of these take in two tensors, one for value, another for meaning, as well as a temperature setting. Here's the current ones available:
- - derived_max
- - derived_min
- - derived_adjustedmin
- - derived_mean
- - derived_adjustedmean
+ - AVNNDeriveMax
+ - AVNNDeriveMin
+ - AVNNDeriveAdjustedMin
+ - AVNNDeriveMean
+ - AVNNDeriveAdjustedMean
+
+Under the hood, a derive mode is a utility class with 2 functions, scalar and batch.
 
 # Condensers
 
@@ -90,6 +94,10 @@ Collapses one dimension of the tensor by appending the meaning and the value, th
 ### FusingCondenser
 
 A learned layer is used where both value and meaning is put inside an activation function, relu by default, as: `Sum(value x value_weight + meaning x meaning_value) + bias`
+
+### Conv2DFusingCondenser
+
+Same as FusingCondenser but for Conv2D layers.
 
 ### SeparatingCondenser
 
