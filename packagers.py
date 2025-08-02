@@ -36,7 +36,6 @@ class ValueNoisePackager(Module):
 
 class MeaningNoisePackager(Module):
     def forward(self, tensor):
-        rand_tensor = rand_like(tensor)
-        return stack([tensor, rand_tensor], dim=-1)
+        return stack([tensor, rand_like(tensor)], dim=-1)
 
 __all__ = ['Type1EmptyPackager', 'Type2EmptyPackager', 'ValueNoisePackager', 'MeaningNoisePackager', 'FuseAsMeaningPackager', 'FuseAsValuePackager']
